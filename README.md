@@ -2,7 +2,7 @@
 
 This repository contains the code for visualizing the concepts of multiple hypothesis testing and the correction methods for controlling the type I error rate. The code generates plots for the family-wise error rate (FWER) and Bonferroni correction. If you want to learn more about the concepts of multiple hypothesis testing and the correction methods, please check the [Comparing samples—part II from Nature Methods](https://www.nature.com/articles/nmeth.2900).
 
-Libraries we need to create the FWER distribution and Bonferroni _p-values_
+Libraries we need to create the FWER distribution and Bonferroni _p-values_.
 ```r
 library(tidyverse)
 library(ggtext)
@@ -58,7 +58,7 @@ FWER_plot <- FWER %>%
   )
 ```
 
-Plotting the Bonferroni correction using the formula `𝛼 = 𝛼 / k`. The Bonferroni correction is the simplest method to correct for multiple comparisons. It works well when the tests are independent few in number. However, it is conservative when the tests are correlated or when the number of tests is large.
+Plotting the Bonferroni correction using the formula `𝛼 = 𝛼 / k`. The Bonferroni correction is the simplest method to correct for multiple comparisons. It works well when the tests are independent and few in number. However, it is conservative when the tests are correlated or when the number of tests is large.
 
 ```r
 Bonferroni_correction <- expand.grid(number_of_comparison, alpha_levels) %>%
@@ -94,7 +94,7 @@ Bonferroni_plot <- Bonferroni_correction %>%
   )
 ```
 
-Save the combined plot to your directory
+Save the combined plot to your directory.
 
 ```{r}
 type_I_error <- (FWER_plot + Bonferroni_plot) + plot_layout(guides = "collect") &
