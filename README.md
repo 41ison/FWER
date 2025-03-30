@@ -1,14 +1,15 @@
-# FWER
-Family-wise error rate and Bonferroni correction
+# Family-Wise Error Rate (FWER)
 
-Libraries we need to create the FWER and Bonferroni _p-values_
+This repository contains the code for visualizing the concepts of multiple hypothesis testing and the correction methods for controlling the type I error rate. The code generates plots for the family-wise error rate (FWER) and Bonferroni correction. If you want to learn more about the concepts of multiple hypothesis testing and the correction methods, please check the [Comparing samples—part II from Nature Methods](https://www.nature.com/articles/nmeth.2900).
+
+Libraries we need to create the FWER distribution and Bonferroni _p-values_
 ```r
 library(tidyverse)
 library(ggtext)
 library(patchwork)
 ```
 
-Plotting a family-wise error rate (FWER) using the formula `FWER = 1 - (1 – 𝛼)^k`. where k is the number of tests and 𝛼 is the significance level.
+Plotting a family-wise error rate (FWER) using the formula `FWER = 1 - (1 – 𝛼)^k`. Where k is the number of tests and 𝛼 is the significance level. The FWER gives you the probability of making at least one type I error when performing multiple hypothesis tests.
 
 ```r
 number_of_comparison <- seq(1, 100, 1)
@@ -18,6 +19,7 @@ FWER <- expand.grid(number_of_comparison, alpha_levels) %>%
     rename(k = Var1, alpha = Var2) %>%
     dplyr::mutate(FWER = 1 - (1 - alpha)^k)
 
+# we can check how many significant hits we have
 FWER_significant <- FWER %>%
     filter(FWER <= 0.05) %>%
     group_by(alpha) %>%
@@ -56,7 +58,7 @@ FWER_plot <- FWER %>%
   )
 ```
 
-Plotting the Bonferroni correction using the formula `𝛼 = 𝛼 / k`.
+Plotting the Bonferroni correction using the formula `𝛼 = 𝛼 / k`. The Bonferroni correction is the simplest method to correct for multiple comparisons. It works well when the tests are independent few in number. However, it is conservative when the tests are correlated or when the number of tests is large.
 
 ```r
 Bonferroni_correction <- expand.grid(number_of_comparison, alpha_levels) %>%
@@ -92,7 +94,7 @@ Bonferroni_plot <- Bonferroni_correction %>%
   )
 ```
 
-Save the combined plot
+Save the combined plot to your directory
 
 ```{r}
 type_I_error <- (FWER_plot + Bonferroni_plot) + plot_layout(guides = "collect") &
